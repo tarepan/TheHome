@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <h1>hello, lit-html</h1>
+        <div id="for_lit"></div>
+        <script type="module">
+            import {html, render} from 'https://unpkg.com/lit-html?module';
+            const date_gene = date => html`${date.toLocaleString()}`;
+            const rendering = () => render(date_gene(new Date()), document.body.querySelector("#for_lit"));
+            rendering();
+            window.setInterval(rendering, 1*1000);
+        </script>
+    
+    </body>
+</html>
