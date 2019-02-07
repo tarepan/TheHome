@@ -6,6 +6,10 @@
     <body>
         <h1>hello, lit-html</h1>
         <div id="for_lit"></div>
+        <button id="authorize_button" style="display: none;">Authorize</button>
+        <button id="signout_button" style="display: none;">Sign Out</button>
+        <div id="inbox1">N_inbox_placeholder</div>
+    
         <script type="module">
             import {html, render} from 'https://unpkg.com/lit-html?module';
             const date_gene = date => html`${date.toLocaleString()}`;
@@ -14,5 +18,73 @@
             window.setInterval(rendering, 1*1000);
         </script>
     
+        <script type="text/javascript">
+            // Configs
+            var CLIENT_ID = '830847602052-os8qbsv2iot82jeq8tliiorl1iocp7et.apps.googleusercontent.com';
+            var API_KEY = 'AIzaSyABSPbwZGzgGnWt-xQAmHkkZsViaz91yt8';
+            var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest"];
+            var SCOPES = 'https://www.googleapis.com/auth/gmail.readonly';
+    
+            var authorizeButton = document.getElementById('authorize_button');
+            var signoutButton = document.getElementById('signout_button');
+    
+            async function handleClientLoad() {
+            // Load client library, OAuth2 library
+            await new Promise((resolve, reject)=>gapi.load('client:auth2', resolve));
+    
+            // Initialzie client library
+            await gapi.client.init({
+                apiKey: API_KEY,
+                clientId: CLIENT_ID,
+                discoveryDocs: DISCOVERY_DOCS,
+                scope: SCOPES
+            }).catch(err => {
+                console.log(JSON.stringify(err, null, 2));
+                throw "login error";
+            });
+            
+            // Attach event handler for sign-in state changes.
+            gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+    
+            // Attach listener for sign-in/out button
+            updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+            authorizeButton.onclick = (event) => gapi.auth2.getAuthInstance().signIn();
+            signoutButton.onclick   = (event) => gapi.auth2.getAuthInstance().signOut();
+            }
+    
+            async function updateSigninStatus(isSignedIn) {
+            authorizeButton.style.display = isSignedIn ? 'none' :'block';
+            signoutButton.style.display   = isSignedIn ? 'block':'none';
+            }
+        </script>    
+
+        <script async defer src="https://apis.google.com/js/api.js"
+            onload="this.onload=function(){};handleClientLoad()"
+            onreadystatechange="if (this.readyState === 'complete') this.onload()">
+        </script>
+        
+        <script type="module">
+            import {html, render} from 'https://unpkg.com/lit-html?module';
+    
+            async function count_inbox_mail() {
+            const res = await gapi.client.gmail.users.messages.list({
+                "userId": "me",
+                "labelIds": ["INBOX", "CATEGORY_PERSONAL"],
+            });
+            const N_inbox = res.result.messages.length;
+            return N_inbox
+            }
+    
+            const update_N_inbox = async () => {
+            // Get inbox mail number from Gmail server.
+            const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+            const N_inbox = isSignedIn ? await count_inbox_mail() : "Please Sign-in Google";
+            render(html`<h2>Gmail inbox: ${N_inbox}</h2>`, document.body.querySelector("#inbox1"));
+            }
+    
+            // Update with interval
+            window.setInterval(update_N_inbox, 1*60*1000);
+        </script>
+  
     </body>
 </html>
