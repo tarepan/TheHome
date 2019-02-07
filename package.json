@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/tarepan/the-home#readme",
   "dependencies": {
+    "express": "^4.16.4",
     "lit-html": "^1.0.0"
   }
 }
