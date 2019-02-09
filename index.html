@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <link rel="manifest" href="/manifest.json">
+        <script>
+            window.addEventListener('load', function() {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register("/serviceWorker.js");
+                }
+            });
+        </script>
     </head>
     <body>
         <h1>TheHome</h1>
