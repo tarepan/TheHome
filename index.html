@@ -66,23 +66,31 @@
         <script type="module">
             import {html, render} from 'https://unpkg.com/lit-html?module';
     
-            async function count_inbox_mail() {
-            const res = await gapi.client.gmail.users.messages.list({
+            // gapi should be initiated.
+            async function count_inbox_mail(gapi_top) {
+            const res = await gapi_top.client.gmail.users.messages.list({
                 "userId": "me",
                 "labelIds": ["INBOX", "CATEGORY_PERSONAL"],
+                "maxResults": 500
             });
-            const N_inbox = res.result.messages.length;
-            return N_inbox
+            console.log(res.result);
+            return res.result.messages ? res.result.messages.length : res.result.resultSizeEstimate;
             }
     
             const update_N_inbox = async () => {
             // Get inbox mail number from Gmail server.
             const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-            const N_inbox = isSignedIn ? await count_inbox_mail() : "Please Sign-in Google";
-            render(html`<h2>Gmail inbox: ${N_inbox}</h2>`, document.body.querySelector("#inbox1"));
+            const N_inbox = isSignedIn ? await count_inbox_mail(gapi) : "Please Sign-in Google";
+            render(html`
+                <section>
+                    <img src="New_Logo_Gmail.svg" />
+                    <h3>inbox: ${N_inbox}</h3>
+                </section>`
+                ,document.body.querySelector("#inbox1"));
             }
     
             // Update with interval
+            window.setTimeout(update_N_inbox, 10*1000);
             window.setInterval(update_N_inbox, 1*60*1000);
         </script>
   
