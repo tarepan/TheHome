@@ -4,15 +4,20 @@
 
     </head>
     <body>
-        <h1>hello, lit-html</h1>
+        <h1>TheHome</h1>
         <div id="for_lit"></div>
+        <div id="weather_ph"></div>
         <button id="authorize_button" style="display: none;">Authorize</button>
         <button id="signout_button" style="display: none;">Sign Out</button>
         <div id="inbox1">N_inbox_placeholder</div>
     
         <script type="module">
             import {html, render} from 'https://unpkg.com/lit-html?module';
-            const date_gene = date => html`${date.toLocaleString()}`;
+            const date_gene = date => html`
+                <section id="clock">
+                    <h2>${date.toLocaleString()}</h2>
+                </section>
+            `;
             const rendering = () => render(date_gene(new Date()), document.body.querySelector("#for_lit"));
             rendering();
             window.setInterval(rendering, 1*1000);
@@ -93,6 +98,37 @@
             window.setTimeout(update_N_inbox, 10*1000);
             window.setInterval(update_N_inbox, 1*60*1000);
         </script>
+
+        <script type="module">
+            import {html, render} from 'https://unpkg.com/lit-html?module';
+
+            async function testx(){
+                const pos = await new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject));
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
+                const appid = "6e6644f5775bc9020264ffb06173ba01";
+
+                // current weather
+                const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=ja&appid=${appid}`);
+                const res_json = await res.json();
+                const weather = res_json.weather[0].description;
+                const weather_icon_url = `http://openweathermap.org/img/w/${res_json.weather[0].icon}.png`;
+                const temp_C = res_json.main.temp;
+                console.log(res_json);
+
+                // weather forecast
+                // const res = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=ja&appid=${appid}`);
+
+                render(html`
+                <section id="weather">
+                    <img src=${weather_icon_url} />
+                    <h3>weather: ${weather}, ${temp_C}℃</h3>
+                </section>`
+                ,document.body.querySelector("#weather_ph"));
+            }
+            testx();
+        </script>
+
   
     </body>
 </html>
