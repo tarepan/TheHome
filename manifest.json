@@ -2,7 +2,7 @@
     "name": "TheHome",
     "short_name": "TheHome",
     "description": "Look single place, Recognize everything.",
-    "start_url": "/",
+    "start_url": "/TheHome/",
     "display": "standalone",
     "theme_color": "#3f51b5",
     "background_color": "#3f51b5",
