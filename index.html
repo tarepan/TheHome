@@ -3,11 +3,17 @@
     <head>
         <link rel="manifest" href="/manifest.json">
         <script>
-            window.addEventListener('load', function() {
-                if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.register("/serviceWorker.js");
-                }
-            });
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/serviceWorker.js').then(function(registration) {
+                        // Registration was successful
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    }, function(err) {
+                        // registration failed :(
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+                });
+            }
         </script>
     </head>
     <body>
