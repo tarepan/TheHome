@@ -26,10 +26,11 @@ export async function updateNInbox(gapi) {
   const NInbox = isSignedIn
     ? await countInboxMail(gapi)
     : "Please Sign-in Google";
+  const imgURL = NInbox != 0 ? "New_Logo_Gmail.svg" : "New_Logo_Gmail_blue.svg";
   render(
     html`
       <section>
-        <img src="New_Logo_Gmail.svg" />
+        <img src=${imgURL} />
         <h3>inbox: ${NInbox}</h3>
       </section>
     `,
