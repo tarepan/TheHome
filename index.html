@@ -93,8 +93,9 @@
             async function count_inbox_mail(gapi_top) {
             const res = await gapi_top.client.gmail.users.messages.list({
                 "userId": "me",
-                "labelIds": ["INBOX", "CATEGORY_PERSONAL"],
-                "maxResults": 500
+                "labelIds": ["INBOX"],
+                // "maxResults": 500,
+                "q": "-category:social -category:promotions"
             });
             console.log(res.result);
             return res.result.messages ? res.result.messages.length : res.result.resultSizeEstimate;
