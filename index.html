@@ -130,10 +130,6 @@
           res_json.weather[0].icon
         }.png`;
         const temp_C = res_json.main.temp;
-        console.log(res_json);
-
-        // weather forecast
-        // const res = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=ja&appid=${appid}`);
 
         render(
           html`
@@ -144,6 +140,19 @@
           `,
           document.body.querySelector("#weather_ph")
         );
+
+        // weather forecast for 5 days (3-hour interval data)
+        // const tResFor = await fetch(
+        //   `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=ja&appid=${appid}`
+        // );
+        // const resFor = await tResFor.json();
+        // resFor.list.map(item => item.dt);
+        // // next day morning
+        // const weather = resFor.list;
+        // const weather_icon_url = `http://openweathermap.org/img/w/${
+        //   resFor.weather[0].icon
+        // }.png`;
+        // const temp_C = resFor.main.temp;
       }
       testx();
     </script>
