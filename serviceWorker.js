@@ -1,3 +1,3 @@
-self.addEventListener('fetch', function(event) {
-    console.log("fetch event recieved.");
+self.addEventListener("fetch", function(event) {
+  console.log("fetch event recieved.");
 });
