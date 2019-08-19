@@ -30,7 +30,7 @@ export async function updateNInbox(gapi) {
   render(
     html`
       <section>
-        <a href="https://gmail.com">
+        <a href="https://gmail.com" target="_blank">
           <img src=${imgURL} />
         </a>
         <h3>inbox: ${NInbox}</h3>
