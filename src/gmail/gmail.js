@@ -1,4 +1,4 @@
-import { html, svg, render } from "https://unpkg.com/lit-html?module";
+import { html, svg, render } from "lit-html";
 
 /**
  * Count remaining GMail's mails with API query.

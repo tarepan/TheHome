@@ -1,4 +1,4 @@
-import { html, render } from "https://unpkg.com/lit-html?module";
+import { html, render } from "lit-html";
 const date_gene = date => html`
   <section id="clock">
     <h2>${date.toLocaleString()}</h2>

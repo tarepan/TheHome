@@ -42,3 +42,7 @@ async function updateSigninStatus(isSignedIn) {
   authorizeButton.style.display = isSignedIn ? "none" : "block";
   signoutButton.style.display = isSignedIn ? "block" : "none";
 }
+
+(async () => {
+  await handleClientLoad();
+})();
