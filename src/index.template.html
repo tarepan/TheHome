@@ -12,7 +12,26 @@
     <button id="signout_button" style="display: none;">Sign Out</button>
     <div id="inbox1">N_inbox_placeholder</div>
     <div id="cal_ph">Calendar placeholder</div>
-
+    <div id="openweathermap-widget-12"></div>
+    <script>
+      window.myWidgetParam ? window.myWidgetParam : (window.myWidgetParam = []);
+      window.myWidgetParam.push({
+        id: 12,
+        cityid: "1850147",
+        appid: "6e6644f5775bc9020264ffb06173ba01",
+        units: "metric",
+        containerid: "openweathermap-widget-12"
+      });
+      (function() {
+        var script = document.createElement("script");
+        script.async = true;
+        script.charset = "utf-8";
+        script.src =
+          "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(script, s);
+      })();
+    </script>
     <script src="https://apis.google.com/js/api.js"></script>
 
     <!-- <script
