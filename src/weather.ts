@@ -34,16 +34,12 @@ class WeatherWidget extends LitElement {
 
     // current weather
     const res = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${this.lat}&lon=${
-        this.lon
-      }&units=metric&lang=${this.lang}&appid=${this.appid}`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${this.lat}&lon=${this.lon}&units=metric&lang=${this.lang}&appid=${this.appid}`
     );
-    const res_json = await res.json();
-    this.weather = res_json.weather[0].description;
-    this.iconURL = `http://openweathermap.org/img/wn/${
-      res_json.weather[0].icon
-    }@2x.png`;
-    this.tempC = Math.round(res_json.main.temp * 10) / 10; // xx.x ℃
+    const resJson = await res.json();
+    this.weather = resJson.weather[0].description;
+    this.iconURL = `http://openweathermap.org/img/wn/${resJson.weather[0].icon}@2x.png`;
+    this.tempC = Math.round(resJson.main.temp * 10) / 10; // xx.x ℃
   }
   render() {
     return html`

@@ -1,16 +1,16 @@
 // Configs
-var CLIENT_ID =
+const CLIENT_ID =
   "830847602052-os8qbsv2iot82jeq8tliiorl1iocp7et.apps.googleusercontent.com";
-var API_KEY = "AIzaSyABSPbwZGzgGnWt-xQAmHkkZsViaz91yt8";
-var DISCOVERY_DOCS = [
+const API_KEY = "AIzaSyABSPbwZGzgGnWt-xQAmHkkZsViaz91yt8";
+const DISCOVERY_DOCS = [
   "https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest",
   "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"
 ];
-var SCOPES =
+const SCOPES =
   "https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/calendar.readonly";
 
-var authorizeButton = document.getElementById("authorize_button");
-var signoutButton = document.getElementById("signout_button");
+const authorizeButton = document.getElementById("authorize_button");
+const signoutButton = document.getElementById("signout_button");
 
 async function handleClientLoad() {
   // Load client library, OAuth2 library

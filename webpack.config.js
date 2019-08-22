@@ -4,6 +4,8 @@ const HtmlWebpackInjector = require("html-webpack-injector");
 
 module.exports = {
   mode: "development",
+  // entry snake_case is needed for bundle insertion to head by HtmlWebpackInjector
+  // eslint-disable-next-line @typescript-eslint/camelcase
   entry: { bundle: "./src/index.js", weather_head: "./src/weather.ts" },
   devtool: "inline-source-map",
   module: {

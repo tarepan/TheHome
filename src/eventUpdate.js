@@ -10,20 +10,20 @@ async function listUpcomingEvents() {
     orderBy: "startTime"
   });
   const events = response.result.items;
-  const x_hour = 2;
+  const xHour = 2;
   const latestxh = events.filter(
-    evt => new Date(evt.start.dateTime) - new Date() < x_hour * 60 * 60 * 1000
+    evt => new Date(evt.start.dateTime) - new Date() < xHour * 60 * 60 * 1000
   );
-  const filtered_evts = latestxh.map(evt => evt.summary);
-  const latest_evts = filtered_evts.length ? filtered_evts : ["No event"];
-  console.log(latest_evts);
-  console.log(`length: ${latest_evts.length}`);
+  const filteredEvts = latestxh.map(evt => evt.summary);
+  const latestEvts = filteredEvts.length ? filteredEvts : ["No event"];
+  console.log(latestEvts);
+  console.log(`length: ${latestEvts.length}`);
   // const when = event.start.dateTime ? event.start.dateTime:event.start.date;
   render(
     html`
       <section id="calender">
         <ul>
-          ${latest_evts.map(
+          ${latestEvts.map(
             evt =>
               html`
                 <li>${evt}</li>
