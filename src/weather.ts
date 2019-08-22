@@ -1,4 +1,10 @@
-import { LitElement, html, customElement, property } from "lit-element";
+import {
+  LitElement,
+  html,
+  customElement,
+  property,
+  TemplateResult
+} from "lit-element";
 
 /**
  * Current weather display widget
@@ -7,7 +13,7 @@ import { LitElement, html, customElement, property } from "lit-element";
  * settings: OWM's ID (appid), language (lang), update interval (intevalMin)
  */
 @customElement("weather-widget")
-class WeatherWidget extends LitElement {
+export class WeatherWidget extends LitElement {
   @property({ type: String }) appid = "yourOpenWeatherMapID";
   @property({ type: String }) lang = "ja";
   @property({ type: Number }) lat = 35.68; //  default: Tokyo Station
@@ -18,17 +24,16 @@ class WeatherWidget extends LitElement {
   @property({ type: Number }) intervalMin = 10;
   constructor() {
     super();
-    const that = this;
     // initial query
     this.queryWeather().catch(console.log);
     // intermittent query registration
-    setInterval(() => that.queryWeather(), this.intervalMin * 60 * 1000);
+    setInterval(this.queryWeather.bind(this), this.intervalMin * 60 * 1000);
   }
-  async queryWeather() {
+  async queryWeather(): Promise<void> {
     // location (latitude & longitude) acquisition
-    const pos = await new Promise((resolve: (pos: Position) => void, reject) =>
-      navigator.geolocation.getCurrentPosition(pos => resolve(pos), reject)
-    );
+    const pos = await new Promise<Position>((resolve, reject): void => {
+      navigator.geolocation.getCurrentPosition(pos => resolve(pos), reject);
+    });
     this.lat = pos.coords.latitude;
     this.lon = pos.coords.longitude;
 
@@ -41,7 +46,7 @@ class WeatherWidget extends LitElement {
     this.iconURL = `http://openweathermap.org/img/wn/${resJson.weather[0].icon}@2x.png`;
     this.tempC = Math.round(resJson.main.temp * 10) / 10; // xx.x ℃
   }
-  render() {
+  render(): TemplateResult {
     return html`
       <img src=${this.iconURL} />
       <h3>weather: ${this.weather}, ${this.tempC}℃</h3>
