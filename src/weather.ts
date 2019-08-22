@@ -40,9 +40,9 @@ class WeatherWidget extends LitElement {
     );
     const res_json = await res.json();
     this.weather = res_json.weather[0].description;
-    this.iconURL = `http://openweathermap.org/img/w/${
+    this.iconURL = `http://openweathermap.org/img/wn/${
       res_json.weather[0].icon
-    }.png`;
+    }@2x.png`;
     this.tempC = Math.round(res_json.main.temp * 10) / 10; // xx.x ℃
   }
   render() {
