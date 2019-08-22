@@ -13,7 +13,7 @@
       "cwd": "${workspaceFolder}",
       // "program": "${workspaceFolder}/src/**/${fileBasenameNoExtension}.ts",
       "smartStep": true,
-      "outFiles": ["${workspaceFolder}/build/**/*.js"]
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"]
     }
   ]
 }
