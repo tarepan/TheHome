@@ -1,5 +1,11 @@
 import { LitElement, html, customElement, property } from "lit-element";
 
+/**
+ * Current weather display widget
+ * Weather information is acquired from OpenWeatherMap (https://openweathermap.org/)
+ * Weather info is updated every "intervalMin" minutes based on device current position
+ * settings: OWM's ID (appid), language (lang), update interval (intevalMin)
+ */
 @customElement("weather-widget")
 class WeatherWidget extends LitElement {
   @property({ type: String }) appid = "yourOpenWeatherMapID";
