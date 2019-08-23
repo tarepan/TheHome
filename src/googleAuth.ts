@@ -9,13 +9,21 @@ const DISCOVERY_DOCS = [
 const SCOPES =
   "https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/calendar.readonly";
 
-const authorizeButton = document.getElementById("authorize_button");
-const signoutButton = document.getElementById("signout_button");
+const authorizeButton = document.getElementById(
+  "authorize_button"
+) as HTMLButtonElement;
+const signoutButton = document.getElementById(
+  "signout_button"
+) as HTMLButtonElement;
 
-async function handleClientLoad() {
+async function updateSigninStatus(isSignedIn: boolean): Promise<void> {
+  authorizeButton.style.display = isSignedIn ? "none" : "block";
+  signoutButton.style.display = isSignedIn ? "block" : "none";
+}
+
+async function handleClientLoad(): Promise<void> {
   // Load client library, OAuth2 library
-  await new Promise((resolve, reject) => gapi.load("client:auth2", resolve));
-
+  await new Promise((resolve): void => gapi.load("client:auth2", resolve));
   // Initialzie client library
   await gapi.client
     .init({
@@ -29,20 +37,17 @@ async function handleClientLoad() {
       throw "login error";
     });
 
+  // auth2 is attached to window.gapi in above client initialization.
   // Attach event handler for sign-in state changes.
   gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
   // Attach listener for sign-in/out button
   updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-  authorizeButton.onclick = event => gapi.auth2.getAuthInstance().signIn();
-  signoutButton.onclick = event => gapi.auth2.getAuthInstance().signOut();
+  authorizeButton.onclick = (): Promise<gapi.auth2.GoogleUser> =>
+    gapi.auth2.getAuthInstance().signIn();
+  signoutButton.onclick = (): void => gapi.auth2.getAuthInstance().signOut();
 }
 
-async function updateSigninStatus(isSignedIn) {
-  authorizeButton.style.display = isSignedIn ? "none" : "block";
-  signoutButton.style.display = isSignedIn ? "block" : "none";
-}
-
-(async () => {
+(async (): Promise<void> => {
   await handleClientLoad();
 })();

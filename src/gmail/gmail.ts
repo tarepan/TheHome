@@ -1,10 +1,10 @@
-import { html, svg, render } from "lit-html";
+import { html, svg, render, SVGTemplateResult } from "lit-html";
 
 /**
  * Count remaining GMail's mails with API query.
  * @param {*} gapi
  */
-export async function countInboxMail(gapi) {
+export async function countInboxMail(gapi: any): Promise<number> {
   const res = await gapi.client.gmail.users.messages.list({
     userId: "me",
     labelIds: ["INBOX"],
@@ -20,7 +20,7 @@ export async function countInboxMail(gapi) {
  *
  * @param {number} nMail - number of unread e-mail
  */
-const gmailIcon = nMail => {
+const gmailIcon = (nMail: number | string): SVGTemplateResult => {
   const cPaper = "#E3E3E3";
   const cBack = "#231F20";
   const cMain = nMail == 0 ? "#3dc7d5" : "#D54B3D";
@@ -59,7 +59,7 @@ const gmailIcon = nMail => {
  * Update html elements which contains number of mails.
  * @param {*} gapi
  */
-export async function updateNInbox(gapi) {
+export async function updateNInbox(gapi: any): Promise<void> {
   // Get inbox mail number from Gmail server.
   const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
   const NInbox = isSignedIn
@@ -75,6 +75,6 @@ export async function updateNInbox(gapi) {
         </a>
       </section>
     `,
-    document.body.querySelector("#inbox1")
+    document.body.querySelector("#inbox1") as Element
   );
 }

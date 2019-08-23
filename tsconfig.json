@@ -11,6 +11,7 @@
     "strictPropertyInitialization": false /* Enable strict checking of property initialization in classes. */,
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
     "allowJs": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "types": ["gapi.auth2", "gapi.client", "gapi.client.calendar"]
   }
 }
