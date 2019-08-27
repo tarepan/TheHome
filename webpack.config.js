@@ -6,7 +6,7 @@ module.exports = {
   mode: "development",
   // entry snake_case is needed for bundle insertion to head by HtmlWebpackInjector
   // eslint-disable-next-line @typescript-eslint/camelcase
-  entry: { bundle: "./src/index.ts", weather_head: "./src/weather.ts" },
+  entry: { bundle: "./src/index.ts" },
   devtool: "inline-source-map",
   module: {
     rules: [
@@ -27,7 +27,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/index.template.html",
-      chunks: ["bundle", "weather_head"]
+      chunks: ["bundle"]
     }),
     new HtmlWebpackInjector()
   ],
