@@ -49,10 +49,6 @@
             Calendar placeholder
           </div>
         </a>
-        <div
-          id="openweathermap-widget-12"
-          class="mdc-layout-grid__cell mdc-card"
-        ></div>
         <article class="mdc-layout-grid__cell mdc-card demo-card">
           <div class="demo-card__primary">
             <h2 class="mdc-typography mdc-typography--headline6">
@@ -67,25 +63,6 @@
     </div>
     <button id="authorize_button" style="display: none;">Authorize</button>
     <button id="signout_button" style="display: none;">Sign Out</button>
-    <script>
-      window.myWidgetParam ? window.myWidgetParam : (window.myWidgetParam = []);
-      window.myWidgetParam.push({
-        id: 12,
-        cityid: "1850147",
-        appid: "6e6644f5775bc9020264ffb06173ba01",
-        units: "metric",
-        containerid: "openweathermap-widget-12"
-      });
-      (function() {
-        var script = document.createElement("script");
-        script.async = true;
-        script.charset = "utf-8";
-        script.src =
-          "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(script, s);
-      })();
-    </script>
     <script src="https://apis.google.com/js/api.js"></script>
 
     <!-- <script
