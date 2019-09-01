@@ -2,6 +2,7 @@
   "recommendations": [
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "bierner.lit-html"
+    "bierner.lit-html",
+    "coenraads.bracket-pair-colorizer-2"
   ]
 }
