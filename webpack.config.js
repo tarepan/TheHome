@@ -31,7 +31,12 @@ module.exports = {
       chunks: ["bundle"]
     }),
     new HtmlWebpackInjector(),
-    new CopyPlugin(["src/manifest.json", "images/**/*"])
+    new CopyPlugin([
+      "src/manifest.json",
+      "images/**/*",
+      "src/wsmain.js",
+      "src/serviceWorker.js"
+    ])
   ],
   devServer: {
     contentBase: path.join(__dirname, "dist"),

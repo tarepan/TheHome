@@ -1,17 +1,8 @@
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function() {
-    navigator.serviceWorker.register("/TheHome/serviceWorker.js").then(
-      function(registration) {
-        // Registration was successful
-        console.log(
-          "ServiceWorker registration successful with scope: ",
-          registration.scope
-        );
-      },
-      function(err) {
-        // registration failed :(
-        console.log("ServiceWorker registration failed: ", err);
-      }
+window.addEventListener("load", () => {
+  navigator.serviceWorker
+    .register("serviceWorker.js")
+    .then(
+      rgst => console.log(`SW registration successful: ${rgst.scope}`),
+      err => console.log(`ServiceWorker registration failed: ${err}`)
     );
-  });
-}
+});
