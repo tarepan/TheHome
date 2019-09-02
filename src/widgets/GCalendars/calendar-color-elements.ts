@@ -46,7 +46,7 @@ export class CalendarColorWidget extends LitElement {
   @property({ type: Number }) matched = 0;
   constructor() {
     super();
-    this.updateCount();
+    setTimeout(this.updateCount.bind(this), 3000);
     const intervalMin = 1;
     setInterval(this.updateCount.bind(this), intervalMin * 60 * 1000);
   }
