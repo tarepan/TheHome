@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackInjector = require("html-webpack-injector");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   mode: "development",
@@ -29,11 +30,13 @@ module.exports = {
       template: "./src/index.template.html",
       chunks: ["bundle"]
     }),
-    new HtmlWebpackInjector()
+    new HtmlWebpackInjector(),
+    new CopyPlugin(["src/manifest.json", "images/**/*"])
   ],
   devServer: {
     contentBase: path.join(__dirname, "dist"),
     // compress: true,
-    port: 8000
+    port: 8000,
+    writeToDisk: true
   }
 };
