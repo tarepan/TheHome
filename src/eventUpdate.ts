@@ -27,9 +27,6 @@ async function listUpcomingEvents(): Promise<void> {
   });
   const filteredEvts = latestxh.map(evt => evt.summary);
   const latestEvts = filteredEvts.length ? filteredEvts : ["No event"];
-  console.log(latestEvts);
-  console.log(`length: ${latestEvts.length}`);
-  // const when = event.start.dateTime ? event.start.dateTime:event.start.date;
   render(
     html`
       <section id="calender">

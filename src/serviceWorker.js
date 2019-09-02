@@ -1,1 +1,1 @@
-self.addEventListener("fetch", evt => console.log("fetch event recieved."));
+self.addEventListener("fetch", evt => null);

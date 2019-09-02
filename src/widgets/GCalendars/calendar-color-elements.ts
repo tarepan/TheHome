@@ -31,7 +31,6 @@ export async function countMatchedColorEvts(
   const matchedColorEvts = events.filter(
     evt => !(evt.colorId !== undefined && excludes.includes(evt.colorId))
   );
-  console.log(`NMatched: ${matchedColorEvts.length}`);
   return matchedColorEvts.length;
 }
 

@@ -2,7 +2,7 @@ window.addEventListener("load", () => {
   navigator.serviceWorker
     .register("serviceWorker.js")
     .then(
-      rgst => console.log(`SW registration successful: ${rgst.scope}`),
+      rgst => null,
       err => console.log(`ServiceWorker registration failed: ${err}`)
     );
 });
