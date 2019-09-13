@@ -43,6 +43,7 @@ export async function countMatchedColorEvts(
 export class CalendarColorWidget extends LitElement {
   @property({ type: Array }) excludes = [];
   @property({ type: Number }) matched = 0;
+  @property({ type: Number }) inboxCount = 0;
   constructor() {
     super();
     setTimeout(this.updateCount.bind(this), 3000);
@@ -52,6 +53,7 @@ export class CalendarColorWidget extends LitElement {
   async updateCount(): Promise<void> {
     // "2": gray (sleep, move), "8": right-green (finished)
     this.matched = await countMatchedColorEvts(["2", "8"]);
+    this.inboxCount = this.matched;
   }
   render(): TemplateResult {
     return html`
