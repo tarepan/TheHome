@@ -37,7 +37,7 @@ export class InboxWidget extends LitElement {
       O.map(assigneds =>
         assigneds.reduce(
           // @ts-ignore
-          (total, node) => (total + node.inboxCount ? node.inboxCount : 0),
+          (total, node) => total + (node.inboxCount ? node.inboxCount : 0),
           0
         )
       ),
