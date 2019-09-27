@@ -21,6 +21,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "fp-ts": "^2.0.5",
+    "hotkeys-js": "^3.7.2",
     "lit-element": "^2.2.1",
     "lit-html": "^1.1.2",
     "luxon": "^1.17.2"
