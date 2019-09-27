@@ -7,6 +7,7 @@ import {
 } from "lit-element";
 import * as O from "fp-ts/lib/Option";
 import { pipe } from "fp-ts/lib/pipeable";
+import hotkeys from "hotkeys-js";
 
 /**
  * Dev Notes: Dependency Injection throught <slot>
@@ -16,6 +17,18 @@ export class InboxWidget extends LitElement {
   @property({ type: Number }) inboxCount = 0;
   constructor() {
     super();
+    hotkeys(
+      "ctrl+i",
+      ((event: Event): void => {
+        event.preventDefault();
+        const details: HTMLDetailsElement | null = this.shadowRoot!.querySelector(
+          "details"
+        );
+        if (details != null) {
+          details.open = details.open ? false : true;
+        }
+      }).bind(this)
+    );
     setInterval(this.checkInboxes.bind(this), 1000);
   }
   private checkInboxes(): void {
