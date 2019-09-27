@@ -57,7 +57,7 @@ export class InboxWidget extends LitElement {
       <div>
         <details>
           <summary>
-            <h2>inbox: ${this.inboxCount}</h2>
+            <h2>inbox: ${this.inboxCount == 0 ? "-" : "some info"}</h2>
           </summary>
           <div id="slots">
             <slot name="widget"><p>No widget</p></slot>
