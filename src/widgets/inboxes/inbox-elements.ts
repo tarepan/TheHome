@@ -62,15 +62,28 @@ export class InboxWidget extends LitElement {
       <style>
         @import url("https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css");
         @import url("https://fonts.googleapis.com/css?family=Noto+Sans+JP|Roboto&display=swap");
+        @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
         div {
           /* Roboto do NOT contain JP => JP is "NotoSansJP" */
           font-family: "Roboto", "Noto Sans JP", sans-serif;
+        }
+        .material-icons.md-48 {
+          font-size: 48px;
+        }
+        .material-icons.md-dark.md-inactive {
+          color: rgba(0, 0, 0, 0.26);
         }
       </style>
       <div>
         <details>
           <summary>
-            <h2>inbox: ${this.inboxCount == 0 ? "-" : "some info"}</h2>
+            <i
+              class="material-icons md-48 md-dark ${this.inboxCount == 0
+                ? "md-inactive"
+                : ""}"
+            >
+              info
+            </i>
           </summary>
           <div id="slots">
             <slot name="widget"><p>No widget</p></slot>
