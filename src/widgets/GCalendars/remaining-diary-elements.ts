@@ -79,16 +79,13 @@ export class RemainingDiaryWidget extends LitElement {
         }
       </style>
       <a href="https://calendar.google.com/calendar/r" target="_blank">
-        <div class="mdc-card">
-          <!-- icon -->
-          <i
-            class="material-icons md-48 md-dark ${this.inboxCount == 0
-              ? "md-inactive"
-              : ""}"
-          >
-            calendar_today
-          </i>
-        </div>
+        <i
+          class="material-icons md-48 md-dark ${this.inboxCount == 0
+            ? "md-inactive"
+            : ""}"
+        >
+          calendar_today
+        </i>
       </a>
     `;
   }
