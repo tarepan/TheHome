@@ -78,7 +78,11 @@ export class RemainingDiaryWidget extends LitElement {
           color: rgba(0, 0, 0, 0.26);
         }
       </style>
-      <a href="https://calendar.google.com/calendar/r" target="_blank">
+      <a
+        href="https://calendar.google.com/calendar/r"
+        target="_blank"
+        rel="noopener"
+      >
         <i
           class="material-icons md-48 md-dark ${this.inboxCount == 0
             ? "md-inactive"

@@ -93,7 +93,7 @@ export class GmailIconWidget extends LitElement {
         }
       </style>
       <section>
-        <a href="https://gmail.com" target="_blank">
+        <a href="https://gmail.com" target="_blank" rel="noopener">
           <i
             class="material-icons md-48 md-dark ${this.inboxCount == 0
               ? "md-inactive"
