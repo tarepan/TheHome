@@ -1,12 +1,15 @@
 # TheHome
 
 ## Dev
+
 ```
-node run.js
+npm start
 ```
-Open localhost:8000 with browser.  
+
+Browser opened automatically (hot-reload ON).
 
 ## Architecture
-"Module widgets"  
 
-independent widgets with LitElement.  
+"Module widgets"
+
+independent widgets with LitElement.

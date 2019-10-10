@@ -52,7 +52,7 @@ export class RemainingDiaryWidget extends LitElement {
   }
   async updateCount(): Promise<void> {
     // "2": gray (sleep, move), "8": right-green (finished)
-    this.matched = await countMatchedColorEvts(["2", "8"]);
+    this.matched = await countMatchedColorEvts(["2", "8"]).catch(() => -1);
     this.inboxCount = this.matched;
   }
   render(): TemplateResult {
