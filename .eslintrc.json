@@ -10,7 +10,7 @@
   ],
   "plugins": ["@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
-  "env": { "browser": true, "node": true, "es6": true }
+  "env": { "browser": true, "serviceworker": true, "node": true, "es6": true }
   //   "parserOptions": { // for type-checking TSlint/recommended
   //     "project": "./tsconfig.json"
   //   },
