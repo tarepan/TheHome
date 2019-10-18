@@ -33,6 +33,7 @@ export class GWeightWidget extends LitElement {
     this.weight = res[1];
   }
   render(): TemplateResult {
+    const target = 68;
     const url =
       "https://docs.google.com/spreadsheets/d/1iLT4X-1FCByjLxG1jwQVuBJnit5BP9LYe99vxyg9Rh8";
     return html`
@@ -48,6 +49,7 @@ export class GWeightWidget extends LitElement {
         <a href=${url} target="_blank">
           <div>${this.date}</div>
           <h3>${this.weight}</h3>
+          <h5>until target: ${target - this.weight}</h5>
         </a>
       </section>
     `;
