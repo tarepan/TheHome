@@ -7,6 +7,7 @@ import {
   TemplateResult
 } from "lit-element";
 import { fetchWeight } from "./requestWeight";
+import { weightIcon } from "./renderIcon";
 
 @customElement("gweight-widget")
 export class GWeightWidget extends LitElement {
@@ -65,16 +66,16 @@ export class GWeightWidget extends LitElement {
       </style>
       <section>
         <a href=${url} target="_blank">
-          <div>${this.date}</div>
-          <h3>${this.weight}</h3>
-          <h5>until target: ${target - this.weight}</h5>
+          <svg viewBox="0 0 520 520" width="100" height="100">
+            ${weightIcon(this.weight)}
+          </svg>
+          <h5>until target: ${(target - this.weight).toFixed(1)} kg</h5>
           <h4>
-            vs last 7 days: ${this.weight - this.weight7dayAve} kg
+            vs last 7 days: ${(this.weight - this.weight7dayAve).toFixed(1)} kg
             (${Math.round(
               ((this.weight - this.weight7dayAve) / this.weight7dayAve) * 100
-            )}%)
+            ).toFixed(0)}%)
           </h4>
-          <img src="./images/wfig.png" height="100" />
         </a>
       </section>
     `;
