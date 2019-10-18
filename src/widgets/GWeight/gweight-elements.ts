@@ -1,3 +1,4 @@
+import { DateTime as dt, Interval } from "luxon";
 import {
   LitElement,
   html,
@@ -11,6 +12,7 @@ import { fetchWeight } from "./requestWeight";
 export class GWeightWidget extends LitElement {
   @property({ type: Number }) weight = 0;
   @property({ type: String }) date = "";
+  @property({ type: Number }) weight7dayAve = 0;
   constructor() {
     super();
     setTimeout(
@@ -28,9 +30,25 @@ export class GWeightWidget extends LitElement {
     const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
     const res = isSignedIn
       ? await fetchWeight(gapi)
-      : (["", 0] as [string, number]);
-    this.date = res[0];
-    this.weight = res[1];
+      : ([[0, 0]] as [number, number][]);
+    const weights = res.map(
+      record => [dt.fromMillis(record[0]), record[1]] as [dt, number]
+    );
+
+    this.date = weights[res.length - 1][0].toISO();
+    this.weight = weights[res.length - 1][1];
+
+    const last7days = weights
+      .slice(0, -1)
+      .filter(record =>
+        Interval.fromDateTimes(
+          dt.local().minus({ days: 7 }),
+          dt.local()
+        ).contains(record[0])
+      );
+    this.weight7dayAve =
+      last7days.reduce((total, record) => total + record[1], 0) /
+      last7days.length;
   }
   render(): TemplateResult {
     const target = 68;
@@ -50,6 +68,13 @@ export class GWeightWidget extends LitElement {
           <div>${this.date}</div>
           <h3>${this.weight}</h3>
           <h5>until target: ${target - this.weight}</h5>
+          <h4>
+            vs last 7 days: ${this.weight - this.weight7dayAve} kg
+            (${Math.round(
+              ((this.weight - this.weight7dayAve) / this.weight7dayAve) * 100
+            )}%)
+          </h4>
+          <img src="./images/wfig.png" height="100" />
         </a>
       </section>
     `;

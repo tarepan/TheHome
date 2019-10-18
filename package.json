@@ -23,7 +23,7 @@
     "fp-ts": "^2.0.5",
     "hotkeys-js": "^3.7.2",
     "lit-element": "^2.2.1",
-    "luxon": "^1.17.2"
+    "luxon": "^1.19.3"
   },
   "devDependencies": {
     "@types/gapi": "0.0.39",
