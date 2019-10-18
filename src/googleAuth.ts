@@ -3,10 +3,11 @@ const CLIENT_ID =
   "830847602052-os8qbsv2iot82jeq8tliiorl1iocp7et.apps.googleusercontent.com";
 const DISCOVERY_DOCS = [
   "https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest",
-  "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"
+  "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+  "https://sheets.googleapis.com/$discovery/rest?version=v4"
 ];
 const SCOPES =
-  "https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/calendar.readonly";
+  "https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/spreadsheets";
 
 const authorizeButton = document.getElementById(
   "authorize_button"
