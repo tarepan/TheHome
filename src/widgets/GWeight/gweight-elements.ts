@@ -78,20 +78,18 @@ export class GWeightWidget extends LitElement {
           font-family: "Roboto", "Noto Sans JP", sans-serif;
         }
       </style>
-      <section>
-        <a href=${url} target="_blank">
-          <svg viewBox="0 0 520 520" width="100" height="100">
-            ${weightIcon(this.weight)}
-          </svg>
-          <h5>until target: ${(target - this.weight).toFixed(1)} kg</h5>
-          <h4>
-            vs last 7 days: ${(this.weight - this.weight7dayAve).toFixed(1)} kg
-            (${Math.round(
-              ((this.weight - this.weight7dayAve) / this.weight7dayAve) * 100
-            ).toFixed(0)}%)
-          </h4>
-        </a>
-      </section>
+      <a href=${url} target="_blank">
+        <svg viewBox="0 0 520 520" width="100" height="100">
+          ${weightIcon(this.weight)}
+        </svg>
+        <h5>until target: ${(target - this.weight).toFixed(1)} kg</h5>
+        <h4>
+          vs last 7 days: ${(this.weight - this.weight7dayAve).toFixed(1)} kg
+          (${Math.round(
+            ((this.weight - this.weight7dayAve) / this.weight7dayAve) * 100
+          ).toFixed(0)}%)
+        </h4>
+      </a>
     `;
   }
 }

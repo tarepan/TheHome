@@ -65,23 +65,21 @@ export class SleepWidget extends LitElement {
           color: rgba(0, 0, 0, 0.26);
         }
       </style>
-      <section>
-        <a href=${url} target="_blank" rel="noopener">
-          <div>
-            <i
-              class="material-icons md-48 md-dark ${this.goodWakeup == true
-                ? "md-inactive"
-                : ""}"
-            >
-              airline_seat_recline_normal
-            </i>
-            <h3>
-              ${dt.fromMillis(this.wakeup).toLocaleString(dt.TIME_24_SIMPLE)}
-              (${sLength.hours}h ${sLength.minutes}m)
-            </h3>
-          </div>
-        </a>
-      </section>
+      <a href=${url} target="_blank" rel="noopener">
+        <div>
+          <i
+            class="material-icons md-48 md-dark ${this.goodWakeup == true
+              ? "md-inactive"
+              : ""}"
+          >
+            airline_seat_recline_normal
+          </i>
+          <h3>
+            ${dt.fromMillis(this.wakeup).toLocaleString(dt.TIME_24_SIMPLE)}
+            (${sLength.hours}h ${sLength.minutes}m)
+          </h3>
+        </div>
+      </a>
     `;
   }
 }

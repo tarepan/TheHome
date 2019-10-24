@@ -92,17 +92,15 @@ export class GmailIconWidget extends LitElement {
           color: rgba(0, 0, 0, 0.26);
         }
       </style>
-      <section>
-        <a href="https://gmail.com" target="_blank" rel="noopener">
-          <i
-            class="material-icons md-48 md-dark ${this.inboxCount == 0
-              ? "md-inactive"
-              : ""}"
-          >
-            mail_outline
-          </i>
-        </a>
-      </section>
+      <a href="https://gmail.com" target="_blank" rel="noopener">
+        <i
+          class="material-icons md-48 md-dark ${this.inboxCount == 0
+            ? "md-inactive"
+            : ""}"
+        >
+          mail_outline
+        </i>
+      </a>
     `;
   }
 }
