@@ -47,9 +47,23 @@ export class GWeightWidget extends LitElement {
           dt.local()
         ).contains(record[0])
       );
+    // average array of each days
+    const eachDays = [...Array(7).keys()]
+      .map(idx => {
+        const inDays = last7days.filter(record =>
+          Interval.fromDateTimes(
+            dt.local().minus({ days: idx + 1 }),
+            dt.local().minus({ days: idx })
+          ).contains(record[0])
+        );
+        return !inDays.length
+          ? 0
+          : inDays.reduce((total, newRecord) => total + newRecord[1], 0) /
+              inDays.length;
+      })
+      .filter(ave => ave != 0);
     this.weight7dayAve =
-      last7days.reduce((total, record) => total + record[1], 0) /
-      last7days.length;
+      eachDays.reduce((total, ave) => total + ave, 0) / eachDays.length;
   }
   render(): TemplateResult {
     const target = 68;
