@@ -13,7 +13,7 @@ import { weightIcon } from "./renderIcon";
 export class GWeightWidget extends LitElement {
   @property({ type: Number }) weight = 0;
   @property({ type: String }) date = "";
-  @property({ type: Number }) weight7dayAve = 0;
+  @property({ type: Number }) weightLastWeekAve = 0;
   constructor() {
     super();
     setTimeout(
@@ -39,21 +39,21 @@ export class GWeightWidget extends LitElement {
     this.date = weights[res.length - 1][0].toISO();
     this.weight = weights[res.length - 1][1];
 
-    const last7days = weights
+    const lastWeek = weights
       .slice(0, -1)
       .filter(record =>
         Interval.fromDateTimes(
-          dt.local().minus({ days: 7 }),
-          dt.local()
+          dt.local().minus({ days: 14 }),
+          dt.local().minus({ days: 7 })
         ).contains(record[0])
       );
     // average array of each days
-    const eachDays = [...Array(7).keys()]
+    const lastWeekEachDays = [...Array(7).keys()]
       .map(idx => {
-        const inDays = last7days.filter(record =>
+        const inDays = lastWeek.filter(record =>
           Interval.fromDateTimes(
-            dt.local().minus({ days: idx + 1 }),
-            dt.local().minus({ days: idx })
+            dt.local().minus({ days: 7 + idx + 1 }),
+            dt.local().minus({ days: 7 + idx })
           ).contains(record[0])
         );
         return !inDays.length
@@ -62,8 +62,9 @@ export class GWeightWidget extends LitElement {
               inDays.length;
       })
       .filter(ave => ave != 0);
-    this.weight7dayAve =
-      eachDays.reduce((total, ave) => total + ave, 0) / eachDays.length;
+    this.weightLastWeekAve =
+      lastWeekEachDays.reduce((total, ave) => total + ave, 0) /
+      lastWeekEachDays.length;
   }
   render(): TemplateResult {
     const target = 68;
@@ -84,9 +85,11 @@ export class GWeightWidget extends LitElement {
         </svg>
         <h5>until target: ${(target - this.weight).toFixed(1)} kg</h5>
         <h4>
-          vs last 7 days: ${(this.weight - this.weight7dayAve).toFixed(1)} kg
+          vs last 7 days: ${(this.weight - this.weightLastWeekAve).toFixed(1)}
+          kg
           (${Math.round(
-            ((this.weight - this.weight7dayAve) / this.weight7dayAve) * 100
+            ((this.weight - this.weightLastWeekAve) / this.weightLastWeekAve) *
+              100
           ).toFixed(0)}%)
         </h4>
       </a>
