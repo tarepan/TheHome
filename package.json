@@ -27,7 +27,8 @@
     "lit-element": "^2.2.1",
     "luxon": "^1.19.3",
     "react": "^16.11.0",
-    "react-dom": "^16.11.0"
+    "react-dom": "^16.11.0",
+    "svg-inline-react": "^3.2.0"
   },
   "devDependencies": {
     "@types/gapi": "0.0.39",
