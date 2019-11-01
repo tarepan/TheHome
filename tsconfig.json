@@ -3,7 +3,7 @@
     "outDir": "./dist/",
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "es2015",
+    "module": "es2015", // "commonjs",
     "moduleResolution": "node",
     "target": "ES2018",
     "strict": true /* Enable all strict type-checking options. */,
@@ -12,6 +12,7 @@
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
     "allowJs": true,
     "experimentalDecorators": true,
-    "types": ["gapi.auth2", "gapi.client", "gapi.client.calendar"]
+    "types": ["gapi.auth2", "gapi.client", "gapi.client.calendar"],
+    "jsx": "react"
   }
 }

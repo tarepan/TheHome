@@ -1,9 +1,11 @@
+import { SleepHistroy } from "./domain";
+
 /**
  * Fecth sleep logs
  * @param gapi
  * @return [wakeupUnixTime, sleepLengthUnixTime]
  */
-export async function fetchSleeps(gapi: any): Promise<[number, number][]> {
+export async function fetchSleeps(gapi: any): Promise<SleepHistroy> {
   const res = await gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: "1tPqJlHvR7pu3q4idv2zyYC435eHPVsL7Vn0Q1YCgvt0",
     range: "'シート1'!A:C"
