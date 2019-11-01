@@ -1,18 +1,10 @@
-import {
-  LitElement,
-  html,
-  customElement,
-  property,
-  TemplateResult
-} from "lit-element";
+import { LitElement, html, customElement, TemplateResult } from "lit-element";
+import React from "react";
+import ReactDOM from "react-dom";
 
 @customElement("blood-widget")
 export class BloodWidget extends LitElement {
-  constructor() {
-    super();
-  }
   render(): TemplateResult {
-    const url = "https://www.kenketsu.jp";
     return html`
       <style>
         @import url("https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css");
@@ -35,11 +27,22 @@ export class BloodWidget extends LitElement {
           color: rgba(0, 0, 0, 0.26);
         }
       </style>
-      <a href=${url} target="_blank">
-        <i class="material-icons md-48 md-dark">
-          opacity
-        </i>
-      </a>
+      <div id="hook"></div>
     `;
   }
+  firstUpdated() {
+    const hookElem = this.shadowRoot
+      ? this.shadowRoot.querySelector("#hook")
+      : null;
+    ReactDOM.render(<BloodReactWidget />, hookElem);
+  }
 }
+
+const BloodReactWidget: React.FC = () => {
+  const url = "https://www.kenketsu.jp";
+  return (
+    <a href={url} target="_blank">
+      <i className="material-icons md-48 md-dark">opacity</i>
+    </a>
+  );
+};
