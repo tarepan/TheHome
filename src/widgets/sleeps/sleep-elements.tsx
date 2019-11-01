@@ -3,6 +3,12 @@ import { LitElement, html, customElement } from "lit-element";
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { fetchSleeps } from "./requestSleeps";
+import {
+  histroy2Wakeup,
+  history2Length,
+  SleepHistroy,
+  history2wasGoodWakeup
+} from "./domain";
 
 @customElement("sleep-widget")
 export class SleepWidget extends LitElement {
@@ -40,10 +46,9 @@ export class SleepWidget extends LitElement {
   }
 }
 
-const useSleep = () => {
+const useSleepHistory = () => {
   const [isFirst, setIsFirst] = React.useState(true);
-  const [wakeup, setWakeup] = React.useState(0);
-  const [length, setLength] = React.useState(0);
+  const [history, setHistory] = React.useState([[0, 0]] as SleepHistroy);
   useEffect(() => {
     const id = setTimeout(
       () => {
@@ -51,12 +56,10 @@ const useSleep = () => {
         const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
         // fetch
         (async () => {
-          const resSleeps = isSignedIn
+          const sleepHistory = isSignedIn
             ? await fetchSleeps(gapi)
-            : ([[0, 0]] as [number, number][]);
-          const lastSleep = resSleeps[resSleeps.length - 1];
-          setWakeup(lastSleep[0]);
-          setLength(lastSleep[1]);
+            : ([[0, 0]] as SleepHistroy);
+          setHistory(sleepHistory);
           setIsFirst(false);
         })();
       },
@@ -64,32 +67,32 @@ const useSleep = () => {
     );
     return () => clearTimeout(id);
   });
-  return [wakeup, length];
+  return history;
 };
 
 const SleepReactWidget: React.FC = props => {
-  const [wakeup, length] = useSleep();
-  return <SleepIndexes sleepLength={length} wakeup={wakeup} />;
+  const history = useSleepHistory();
+  return <SleepIndexes sleepHistory={history} />;
 };
 
-interface SleepIndexesProps {
-  sleepLength: number;
-  wakeup: number;
-}
-
-const SleepIndexes: React.FC<SleepIndexesProps> = props => {
+const SleepIndexes: React.FC<{ sleepHistory: SleepHistroy }> = props => {
   const url =
     "https://docs.google.com/spreadsheets/d/1tPqJlHvR7pu3q4idv2zyYC435eHPVsL7Vn0Q1YCgvt0";
+
+  const wakeup = dt
+    .fromMillis(histroy2Wakeup(props.sleepHistory))
+    .toLocaleString(dt.TIME_24_SIMPLE);
+
   const sLength = Duration.fromObject({
     hours: 0,
     minutes: 0,
-    milliseconds: props.sleepLength
+    milliseconds: history2Length(props.sleepHistory)
   }).normalize();
-
-  const wakeup = dt.fromMillis(props.wakeup).toLocaleString(dt.TIME_24_SIMPLE);
   const lengthHours = sLength.hours;
   const lengthMinutes = sLength.minutes;
-  const isGoodWakeup = lengthHours > 5; // fake
+
+  const isGoodWakeup = history2wasGoodWakeup(props.sleepHistory, 10, 0);
+
   return (
     <SleepIcon
       wakeup={wakeup}

@@ -3,7 +3,7 @@
     "outDir": "./dist/",
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "es2015",
+    "module": "es2015", // "commonjs",
     "moduleResolution": "node",
     "target": "ES2018",
     "strict": true /* Enable all strict type-checking options. */,
