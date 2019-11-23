@@ -39,9 +39,7 @@ export class SleepWidget extends LitElement {
     `;
   }
   firstUpdated() {
-    const hookElem = this.shadowRoot
-      ? this.shadowRoot.querySelector("#hook")
-      : null;
+    const hookElem = this.shadowRoot?.querySelector("#hook") ?? null;
     ReactDOM.render(<SleepReactWidget />, hookElem);
   }
 }

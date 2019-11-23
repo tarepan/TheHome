@@ -53,6 +53,11 @@
           storageid="thehome"
           class="mdc-layout-grid__cell"
         ></memo-input-widget>
+        <health-hub class="mdc-layout-grid__cell mdc-card">
+          <gweight-widget></gweight-widget>
+          <sleep-widget></sleep-widget>
+          <blood-widget></blood-widget>
+        </health-hub>
         <weather-widget
           appid="6e6644f5775bc9020264ffb06173ba01"
           url="https://tenki.jp/forecast/3/16/4410/13104/"
@@ -65,13 +70,12 @@
         >
           <h3 slot="about">Treasure Box</h3>
         </memo-widget>
-        <div id="healthHome" class="mdc-layout-grid__cell mdc-card">
+        <!-- <div id="healthHome" class="mdc-layout-grid__cell mdc-card">
           <h3>HealthHome</h3>
           <gweight-widget></gweight-widget>
           <sleep-widget></sleep-widget>
           <blood-widget></blood-widget>
-        </div>
-        <health-hub class="mdc-layout-grid__cell mdc-card"> </health-hub>
+        </div> -->
         <memo-widget
           storageid="thehomemotto"
           class="mdc-layout-grid__cell"
