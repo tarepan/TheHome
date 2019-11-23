@@ -8,3 +8,4 @@ import "./widgets/Gmails/gmail-elements";
 import "./widgets/GWeight/gweight-elements";
 import "./widgets/sleeps/sleep-elements";
 import "./widgets/bloods/blood-elements";
+import "./widgets/healthHub/health-hub";
