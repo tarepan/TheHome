@@ -1,9 +1,53 @@
-import { LitElement, html, customElement, TemplateResult } from "lit-element";
-import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
+import { LitElement, html, customElement, property } from "lit-element";
+
+const NotificationEventName = "panda:notification";
+interface NotificationDetail {
+  nodeName: string; // UPPERCASE
+  hasNotification: boolean;
+}
+type NotificationEvent = CustomEvent<NotificationDetail>;
+// notification for NotifHub
+export const dispatchNotification = (
+  elem: Element,
+  hasNotification: boolean
+): void => {
+  const evt = new CustomEvent<NotificationDetail>(NotificationEventName, {
+    bubbles: true,
+    composed: true,
+    detail: {
+      nodeName: elem.nodeName,
+      hasNotification: hasNotification
+    }
+  });
+  elem.dispatchEvent(evt);
+};
 
 @customElement("health-hub")
 export class HealthHub extends LitElement {
+  @property({ type: Boolean }) showNotification = false;
+  notifications: Map<string, boolean> = new Map<string, boolean>();
+  // UNIXtime
+  lastChecked: number = 0;
+  constructor() {
+    super();
+    // set event handler
+    this.addEventListener(NotificationEventName, (evt: NotificationEvent) => {
+      this.notifications.set(evt.detail.nodeName, evt.detail.hasNotification);
+      this.updateShowNotif();
+    });
+  }
+  updateShowNotif(): void {
+    const allNoNotif: boolean = Array.from(this.notifications.values()).every(
+      isNotif => !isNotif
+    );
+    const checkRecently: boolean =
+      Date.now() - this.lastChecked < 12 * 60 * 60 * 1000;
+    this.showNotification = !allNoNotif && !checkRecently;
+  }
+  updateToggle(): void {
+    this.lastChecked = Date.now();
+    this.updateShowNotif();
+  }
   render() {
     return html`
       <style>
@@ -27,87 +71,18 @@ export class HealthHub extends LitElement {
           color: rgba(0, 0, 0, 0.26);
         }
       </style>
-      <div id="hook"></div>
-    `;
-  }
-  firstUpdated() {
-    const hookElem = this.shadowRoot
-      ? this.shadowRoot.querySelector("#hook")
-      : null;
-    ReactDOM.render(
-      <HealthHubReact>
-        <h4>hello, healthHub</h4>
-        <TestReact />
-      </HealthHubReact>,
-      hookElem
-    );
-  }
-}
-
-const HealthHubReact: React.FC = props => {
-  const [notifMap, setNotif] = React.useState(new Map<string, boolean>());
-  const updateNotification: (name: string, state: boolean) => void = (
-    name,
-    isNotif
-  ) => {
-    setNotif(notifMap => new Map(notifMap.set(name, isNotif)));
-    console.log("call setNotif");
-  };
-
-  const children = React.Children.map(props.children, child => {
-    switch (typeof child) {
-      case "object":
-        console.log("assign setNotification");
-        // @ts-ignore
-        return React.cloneElement(child, {
-          setNotification: updateNotification
-        });
-      default:
-        return child;
-    }
-  });
-
-  return (
-    <>
-      <details>
+      <details @click="${this.updateToggle}">
         <summary>
           <i
-            className={`material-icons md-48 md-dark ${
-              Array.from(notifMap.values()).every(isNotif => !isNotif)
-                ? "md-inactive"
-                : ""
-            }`}
+            class="material-icons md-48 md-dark ${this.showNotification
+              ? ""
+              : "md-inactive"}"
           >
-            info
+            favorite
           </i>
-
-          <h3>HealthHome</h3>
         </summary>
-        {children}
+        <slot></slot>
       </details>
-    </>
-  );
-};
-
-interface NotifProps {
-  setNotification?: (name: string, isNotif: boolean) => void;
+    `;
+  }
 }
-const TestReact: React.FC<NotifProps> = props => {
-  const [state, setState] = useState(0);
-  useEffect(() => {
-    const id = setTimeout(() => {
-      setState(i => i + 1);
-      const isNotif = state > 5;
-      console.log(`isNotif: ${isNotif ? "notif" : "no"}`);
-      props.setNotification
-        ? props.setNotification("testReact", isNotif)
-        : undefined;
-    }, 1000);
-    return () => clearTimeout(id);
-  });
-  return (
-    <>
-      <h3>{state < 5 ? "under 5" : "Big!!"}</h3>
-    </>
-  );
-};

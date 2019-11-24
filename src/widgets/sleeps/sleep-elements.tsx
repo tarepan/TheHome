@@ -12,6 +12,10 @@ import {
 
 @customElement("sleep-widget")
 export class SleepWidget extends LitElement {
+  reactAnchor: Element | null;
+  renderReact() {
+    ReactDOM.render(<SleepReactWidget />, this.reactAnchor);
+  }
   render() {
     return html`
       <style>
@@ -39,10 +43,8 @@ export class SleepWidget extends LitElement {
     `;
   }
   firstUpdated() {
-    const hookElem = this.shadowRoot
-      ? this.shadowRoot.querySelector("#hook")
-      : null;
-    ReactDOM.render(<SleepReactWidget />, hookElem);
+    this.reactAnchor = this.shadowRoot?.querySelector("#hook") ?? null;
+    this.renderReact();
   }
 }
 
