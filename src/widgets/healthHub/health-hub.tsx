@@ -32,6 +32,11 @@ export class HealthHub extends LitElement {
     super();
     // set event handler
     this.addEventListener(NotificationEventName, (evt: NotificationEvent) => {
+      console.log(
+        `notification recieved: ${evt.detail.nodeName} ${
+          evt.detail.hasNotification ? "true" : "false"
+        }`
+      );
       this.notifications.set(evt.detail.nodeName, evt.detail.hasNotification);
       this.updateShowNotif();
     });

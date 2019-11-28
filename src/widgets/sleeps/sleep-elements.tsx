@@ -9,6 +9,7 @@ import {
   SleepHistroy,
   history2wasGoodWakeup
 } from "./domain";
+import { dispatchNotification } from "../healthHub/health-hub";
 
 @customElement("sleep-widget")
 export class SleepWidget extends LitElement {
@@ -21,6 +22,7 @@ export class SleepWidget extends LitElement {
   }
   async refreshHistory() {
     const history = await fetchHistory();
+
     // history to index
     const wakeup = dt
       .fromMillis(histroy2Wakeup(history))
@@ -35,6 +37,9 @@ export class SleepWidget extends LitElement {
     const lengthMinutes = sLength.minutes;
 
     const isGoodWakeup = history2wasGoodWakeup(history, 10, 0);
+
+    // notify status
+    dispatchNotification(this, !isGoodWakeup);
 
     // update UI
     ReactDOM.render(
