@@ -13,8 +13,39 @@ import {
 @customElement("sleep-widget")
 export class SleepWidget extends LitElement {
   reactAnchor: Element | null;
-  renderReact() {
-    ReactDOM.render(<SleepReactWidget />, this.reactAnchor);
+  constructor() {
+    super();
+    // timeout for google auth
+    setTimeout(this.refreshHistory.bind(this), 3 * 1000);
+    setInterval(this.refreshHistory.bind(this), 5 * 60 * 1000);
+  }
+  async refreshHistory() {
+    const history = await fetchHistory();
+    // history to index
+    const wakeup = dt
+      .fromMillis(histroy2Wakeup(history))
+      .toLocaleString(dt.TIME_24_SIMPLE);
+
+    const sLength = Duration.fromObject({
+      hours: 0,
+      minutes: 0,
+      milliseconds: history2Length(history)
+    }).normalize();
+    const lengthHours = sLength.hours;
+    const lengthMinutes = sLength.minutes;
+
+    const isGoodWakeup = history2wasGoodWakeup(history, 10, 0);
+
+    // update UI
+    ReactDOM.render(
+      <SleepIcon
+        wakeup={wakeup}
+        lengthHours={lengthHours}
+        lengthMinutes={lengthMinutes}
+        isGoodWakeUp={isGoodWakeup}
+      />,
+      this.reactAnchor
+    );
   }
   render() {
     return html`
@@ -44,66 +75,16 @@ export class SleepWidget extends LitElement {
   }
   firstUpdated() {
     this.reactAnchor = this.shadowRoot?.querySelector("#hook") ?? null;
-    this.renderReact();
   }
 }
 
-const useSleepHistory = () => {
-  const [isFirst, setIsFirst] = React.useState(true);
-  const [history, setHistory] = React.useState([[0, 0]] as SleepHistroy);
-  useEffect(() => {
-    const id = setTimeout(
-      () => {
-        // SignIn check
-        const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-        // fetch
-        (async () => {
-          const sleepHistory = isSignedIn
-            ? await fetchSleeps(gapi)
-            : ([[0, 0]] as SleepHistroy);
-          setHistory(sleepHistory);
-          setIsFirst(false);
-        })();
-      },
-      isFirst ? 3 * 1000 : 5 * 60 * 1000
-    );
-    return () => clearTimeout(id);
-  });
-  return history;
-};
-
-const SleepReactWidget: React.FC = props => {
-  const history = useSleepHistory();
-  return <SleepIndexes sleepHistory={history} />;
-};
-
-const SleepIndexes: React.FC<{ sleepHistory: SleepHistroy }> = props => {
-  const url =
-    "https://docs.google.com/spreadsheets/d/1tPqJlHvR7pu3q4idv2zyYC435eHPVsL7Vn0Q1YCgvt0";
-
-  const wakeup = dt
-    .fromMillis(histroy2Wakeup(props.sleepHistory))
-    .toLocaleString(dt.TIME_24_SIMPLE);
-
-  const sLength = Duration.fromObject({
-    hours: 0,
-    minutes: 0,
-    milliseconds: history2Length(props.sleepHistory)
-  }).normalize();
-  const lengthHours = sLength.hours;
-  const lengthMinutes = sLength.minutes;
-
-  const isGoodWakeup = history2wasGoodWakeup(props.sleepHistory, 10, 0);
-
-  return (
-    <SleepIcon
-      wakeup={wakeup}
-      lengthHours={lengthHours}
-      lengthMinutes={lengthMinutes}
-      isGoodWakeUp={isGoodWakeup}
-    />
-  );
-};
+async function fetchHistory(): Promise<SleepHistroy> {
+  // SignIn check
+  console.log("gapi:");
+  console.log(gapi);
+  const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+  return isSignedIn ? await fetchSleeps(gapi) : ([[0, 0]] as SleepHistroy);
+}
 
 interface SleepIconProps {
   wakeup: string;
