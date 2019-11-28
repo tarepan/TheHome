@@ -39,10 +39,11 @@ export const history2wasGoodWakeup: histroy2latestEvaluation = (
 ) => {
   const latestSleep = history[history.length - 1];
   const wakeupDT = dt.fromMillis(latestSleep[0]);
-  console.log(wakeupDT.hour, wakeupDT.minute);
   const overWakeupHour = wakeupDT.hour - targetWakeupHour;
   const overWakeupMin = wakeupDT.minute - targetWakeupMin;
   return overWakeupHour < 0 || (overWakeupHour == 0 && overWakeupMin <= 0);
 };
 
 // console.log(history2wasGoodWakeup([[1572562800000, 25200000]], 7, 59));
+
+// future: sleep length evaluation

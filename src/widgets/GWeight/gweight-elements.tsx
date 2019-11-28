@@ -1,4 +1,3 @@
-import { DateTime as dt, Interval } from "luxon";
 import { LitElement, html, customElement } from "lit-element";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -8,11 +7,43 @@ import {
   WeightHistory,
   history2weight,
   history2DeltaW,
-  history2DeltaWPercent
+  history2DeltaWPercent,
+  isGoodWeight
 } from "./domain";
+import { dispatchNotification } from "../healthHub/health-hub";
 
 @customElement("gweight-widget")
 export class GWeightWidget extends LitElement {
+  reactAnchor: Element | null;
+  constructor() {
+    super();
+    // timeout for google auth
+    setTimeout(this.refreshHistory.bind(this), 3 * 1000);
+    setInterval(this.refreshHistory.bind(this), 5 * 60 * 1000);
+  }
+
+  async refreshHistory() {
+    const history = await fetchWeightHistory();
+
+    // history to index
+    const weight = history2weight(history);
+    const delta = history2DeltaW(history);
+    const deltaPercent = history2DeltaWPercent(history);
+    const isGood = isGoodWeight(history);
+    // notify status
+    dispatchNotification(this, !isGood);
+
+    // update UI
+    ReactDOM.render(
+      <WeightIcon
+        weightLatest={weight}
+        deltaWeekly={delta}
+        deltaWPercent={deltaPercent}
+      />,
+      this.reactAnchor
+    );
+  }
+
   render() {
     const target = 68;
     return html`
@@ -28,51 +59,12 @@ export class GWeightWidget extends LitElement {
     `;
   }
   firstUpdated() {
-    const hookElem = this.shadowRoot
-      ? this.shadowRoot.querySelector("#hook")
-      : null;
-    ReactDOM.render(<WeightReactWidget />, hookElem);
+    this.reactAnchor = this.shadowRoot?.querySelector("#hook") ?? null;
   }
 }
 
-const useWeightHistory = () => {
-  const [isFirst, setIsFirst] = React.useState(true);
-  const [history, setHistory] = React.useState([[0, 0]] as WeightHistory);
-  React.useEffect(() => {
-    const id = setTimeout(
-      () => {
-        // SignIn check
-        const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-        // fetch
-        (async () => {
-          const sleepHistory = isSignedIn
-            ? await fetchWeight(gapi)
-            : ([[0, 0]] as WeightHistory);
-          setHistory(sleepHistory);
-          setIsFirst(false);
-        })();
-      },
-      isFirst ? 3 * 1000 : 1 * 60 * 1000
-    );
-    return () => clearTimeout(id);
-  });
-  return history;
-};
-
-const WeightReactWidget: React.FC = props => {
-  const history = useWeightHistory();
-  return <WeightIndexes weightHistory={history} />;
-};
-
-const WeightIndexes: React.FC<{ weightHistory: WeightHistory }> = props => {
-  const weight = history2weight(props.weightHistory);
-  const delta = history2DeltaW(props.weightHistory);
-  const deltaPercent = history2DeltaWPercent(props.weightHistory);
-  return (
-    <WeightIcon
-      weightLatest={weight}
-      deltaWeekly={delta}
-      deltaWPercent={deltaPercent}
-    />
-  );
-};
+async function fetchWeightHistory(): Promise<WeightHistory> {
+  // SignIn check
+  const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+  return isSignedIn ? await fetchWeight(gapi) : ([[0, 0]] as WeightHistory);
+}

@@ -64,3 +64,14 @@ export const history2DeltaWPercent: History2DeltaPercentW = history => {
   const delta = history2DeltaW(history);
   return (delta / past) * 100;
 };
+
+export const isGoodWeight = (history: WeightHistory): boolean => {
+  const TARGET = 68;
+  const TargetDeltaPercentWeekly = -1;
+  const currentWeight = history2weight(history);
+  const deltaPercent = history2DeltaWPercent(history);
+  return (
+    (currentWeight < TARGET && deltaPercent < 0.3) ||
+    (currentWeight >= TARGET && deltaPercent < TargetDeltaPercentWeekly)
+  );
+};
