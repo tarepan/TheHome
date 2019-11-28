@@ -13,20 +13,20 @@ export async function countMatchedColorEvts(
   excludes: string[]
 ): Promise<number> {
   const now = DateTime.local();
-  const response: gapi.client.Response<
-    gapi.client.calendar.Events
-    //@ts-ignore
-  > = await gapi.client.calendar.events.list({
-    // const response = await gapi.client.events.list({ // properly typed, but not work in browser (wrong .d.ts?)
-    calendarId: "primary",
-    alwaysIncludeEmail: false,
-    maxResults: 100,
-    orderBy: "startTime",
-    showDeleted: false,
-    singleEvents: true,
-    timeMin: now.minus({ days: 2 }).toISO(),
-    timeMax: now.toISO()
-  });
+  //@ts-ignore
+  const response: gapi.client.Response<gapi.client.calendar.Events> = await gapi.client.calendar.events.list(
+    {
+      // const response = await gapi.client.events.list({ // properly typed, but not work in browser (wrong .d.ts?)
+      calendarId: "primary",
+      alwaysIncludeEmail: false,
+      maxResults: 100,
+      orderBy: "startTime",
+      showDeleted: false,
+      singleEvents: true,
+      timeMin: now.minus({ days: 2 }).toISO(),
+      timeMax: now.toISO()
+    }
+  );
   const events = response.result.items as gapi.client.calendar.Event[];
   const matchedColorEvts = events.filter(
     evt => !(evt.colorId !== undefined && excludes.includes(evt.colorId))
