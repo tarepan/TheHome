@@ -121,7 +121,7 @@ export class MealWidget extends LitElement {
         target="_blank"
         rel="noopener"
       >
-        ${mealIcon(this.calory)}
+        ${mealIcon(this.calory, !this.isGood)}
       </a>
     `;
   }
