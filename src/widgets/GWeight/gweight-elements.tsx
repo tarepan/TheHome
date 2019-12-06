@@ -39,6 +39,7 @@ export class GWeightWidget extends LitElement {
         weightLatest={weight}
         deltaWeekly={delta}
         deltaWPercent={deltaPercent}
+        isGood={isGood}
       />,
       this.reactAnchor
     );
