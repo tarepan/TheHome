@@ -79,6 +79,7 @@ function countCalory(meals: Meal[]): number {
 @customElement("meal-widget")
 export class MealWidget extends LitElement {
   @property({ type: Boolean }) isGood = true;
+  @property({ type: Number }) count = 0;
   @property({ type: Number }) calory = 10000;
   constructor() {
     super();
@@ -88,9 +89,9 @@ export class MealWidget extends LitElement {
   }
   async updateCount(): Promise<void> {
     const meals = await fetchYesterdayMeals().catch(() => []);
-    const count = countMeals(meals);
+    this.count = countMeals(meals);
     this.calory = countCalory(meals);
-    this.isGood = count >= 3 && this.calory <= 2000;
+    this.isGood = this.count >= 3 && this.calory <= 2000;
     dispatchNotification(this, !this.isGood);
   }
   render(): TemplateResult {
@@ -121,7 +122,7 @@ export class MealWidget extends LitElement {
         target="_blank"
         rel="noopener"
       >
-        ${mealIcon(this.calory, !this.isGood)}
+        ${mealIcon(this.count, this.calory, !this.isGood)}
       </a>
     `;
   }
