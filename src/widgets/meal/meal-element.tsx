@@ -7,6 +7,7 @@ import {
 } from "lit-element";
 import { DateTime } from "luxon";
 import { dispatchNotification } from "../healthHub/health-hub";
+import { mealIcon } from "./MealIcon";
 
 type Meal = {
   date: number; // UNItime
@@ -120,13 +121,7 @@ export class MealWidget extends LitElement {
         target="_blank"
         rel="noopener"
       >
-        <i
-          class="material-icons md-48 md-dark ${this.isGood
-            ? "md-inactive"
-            : ""}"
-        >
-          fastfood
-        </i>
+        ${mealIcon(this.calory)}
       </a>
     `;
   }

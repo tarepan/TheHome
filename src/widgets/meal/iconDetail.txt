@@ -1,0 +1,3 @@
+origin: Google Material Icon
+src: https://material.io/resources/icons/?search=food&icon=fastfood&style=baseline
+original licence: Apache license version 2.0
