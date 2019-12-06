@@ -59,7 +59,7 @@ export async function countEatingEvents(): Promise<EatingCount> {
 @customElement("meal-widget")
 export class MealWidget extends LitElement {
   @property({ type: Boolean }) isGood = true;
-  count: EatingCount = { smallMeal: 100, bigMeal: 100 };
+  count: number = 0;
   constructor() {
     super();
     setTimeout(this.updateCount.bind(this), 3000);
@@ -67,11 +67,12 @@ export class MealWidget extends LitElement {
     setInterval(this.updateCount.bind(this), intervalMin * 60 * 1000);
   }
   async updateCount(): Promise<void> {
-    this.count = await countEatingEvents().catch(() => ({
+    const counts = await countEatingEvents().catch(() => ({
       smallMeal: 100,
       bigMeal: 100
     }));
-    this.isGood = this.count.smallMeal <= 4 && this.count.bigMeal === 0;
+    this.count = counts.smallMeal + counts.bigMeal;
+    this.isGood = this.count >= 3;
     dispatchNotification(this, !this.isGood);
   }
   render(): TemplateResult {
