@@ -8,17 +8,26 @@ import {
 import { DateTime } from "luxon";
 import { dispatchNotification } from "../healthHub/health-hub";
 
-interface EatingCount {
-  smallMeal: number;
-  bigMeal: number;
-}
+type Meal = {
+  date: number; // UNItime
+  calory: number; // [kcal]
+};
 
+function extractCalory(content: string | undefined): number {
+  if (content === undefined) {
+    // default calory for meal
+    return 500;
+  } else {
+    const template = /\s*(\d+)\s*kcal\s*/;
+    const result = template.exec(content);
+    return result && result.length >= 2 ? parseInt(result[1]) : 0;
+  }
+}
 /**
  * Count meals in Google Calendar.
- * Yesterday meals (green event only) are counted.
- * "少食" (<500 kcal) and "食" (>500 kcal) are separately counted.
+ * Yesterday meals (("少食" | "食") && green event) are counted.
  */
-export async function countEatingEvents(): Promise<EatingCount> {
+async function fetchYesterdayMeals(): Promise<Meal[]> {
   const now = DateTime.local();
   //@ts-ignore
   const response: gapi.client.Response<gapi.client.calendar.Events> = await gapi.client.calendar.events.list(
@@ -35,20 +44,30 @@ export async function countEatingEvents(): Promise<EatingCount> {
   );
   const yesterdayDay = now.day - 1;
   const events = response.result.items as gapi.client.calendar.Event[];
-  const yesterdays = events
-    // green events
-    .filter(evt => evt.colorId === "2")
-    // yesterday events
-    .filter(
-      evt =>
-        evt.start != undefined &&
-        DateTime.fromISO(evt.start.dateTime as string).day === yesterdayDay
-    );
-  const eatingCount: EatingCount = {
-    smallMeal: yesterdays.filter(evt => evt.summary === "少食").length,
-    bigMeal: yesterdays.filter(evt => evt.summary === "食").length
-  };
-  return eatingCount;
+  return (
+    events
+      // green events
+      .filter(evt => evt.colorId === "2")
+      // yesterday events
+      .filter(
+        evt =>
+          evt.start != undefined &&
+          DateTime.fromISO(evt.start.dateTime as string).day === yesterdayDay
+      )
+      .filter(evt => evt.summary === "少食" || evt.summary === "食")
+      .map(evt => ({
+        date: DateTime.fromISO(evt.start?.dateTime as string).toMillis(),
+        calory: extractCalory(evt.description)
+      }))
+  );
+}
+
+function countMeals(meals: Meal[]): number {
+  return meals.length;
+}
+
+function countCalory(meals: Meal[]): number {
+  return meals.reduce((total, meal) => total + meal.calory, 0);
 }
 
 /**
@@ -59,7 +78,7 @@ export async function countEatingEvents(): Promise<EatingCount> {
 @customElement("meal-widget")
 export class MealWidget extends LitElement {
   @property({ type: Boolean }) isGood = true;
-  count: number = 0;
+  @property({ type: Number }) calory = 10000;
   constructor() {
     super();
     setTimeout(this.updateCount.bind(this), 3000);
@@ -67,12 +86,10 @@ export class MealWidget extends LitElement {
     setInterval(this.updateCount.bind(this), intervalMin * 60 * 1000);
   }
   async updateCount(): Promise<void> {
-    const counts = await countEatingEvents().catch(() => ({
-      smallMeal: 100,
-      bigMeal: 100
-    }));
-    this.count = counts.smallMeal + counts.bigMeal;
-    this.isGood = this.count >= 3;
+    const meals = await fetchYesterdayMeals().catch(() => []);
+    const count = countMeals(meals);
+    this.calory = countCalory(meals);
+    this.isGood = count >= 3 && this.calory <= 2000;
     dispatchNotification(this, !this.isGood);
   }
   render(): TemplateResult {
