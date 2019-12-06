@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>TheHome</title>
+    <link rel="manifest" href="./manifest.json" />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="./images/favicons/144x144.png"
+    />
+    <meta name="theme-color" content="#4285f4" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="Description" content="View your life at once in TheHome." />
+    <script src="./wsmain.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/weather-elements@latest"
+      async
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/memo-elements@latest"
+      async
+    ></script>
+    <style>
+      @import url("https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css");
+      @import url("https://fonts.googleapis.com/css?family=Noto+Sans+JP|Roboto&display=swap");
+      body {
+        font-family: "Roboto", "Noto Sans JP", sans-serif;
+      }
+      @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+    </style>
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+  </head>
+  <body class="mdc-typography">
+    <div class="mdc-layout-grid">
+      <div class="mdc-layout-grid__inner">
+        <inbox-widget class="mdc-layout-grid__cell mdc-card">
+          <gmail-icon-widget
+            class="mdc-layout-grid__cell"
+            slot="widget"
+          ></gmail-icon-widget>
+          <remaining-diary-widget
+            class="mdc-layout-grid__cell"
+            slot="widget"
+          ></remaining-diary-widget>
+          <memo-output-widget
+            storageid="thehome"
+            class="mdc-layout-grid__cell"
+            slot="widget"
+          ></memo-output-widget>
+        </inbox-widget>
+        <clock-widget class="mdc-layout-grid__cell"></clock-widget>
+        <memo-input-widget
+          storageid="thehome"
+          class="mdc-layout-grid__cell"
+        ></memo-input-widget>
+        <health-hub class="mdc-layout-grid__cell mdc-card">
+          <gweight-widget></gweight-widget>
+          <sleep-widget></sleep-widget>
+          <blood-widget></blood-widget>
+          <meal-widget></meal-widget>
+        </health-hub>
+        <weather-widget
+          appid="6e6644f5775bc9020264ffb06173ba01"
+          url="https://tenki.jp/forecast/3/16/4410/13104/"
+          class="mdc-layout-grid__cell mdc-card"
+        ></weather-widget>
+        <memo-widget
+          storageid="thehometreasure"
+          class="mdc-layout-grid__cell"
+          details
+        >
+          <h3 slot="about">Treasure Box</h3>
+        </memo-widget>
+        <!-- <div id="healthHome" class="mdc-layout-grid__cell mdc-card">
+          <h3>HealthHome</h3>
+          <gweight-widget></gweight-widget>
+          <sleep-widget></sleep-widget>
+          <blood-widget></blood-widget>
+        </div> -->
+        <memo-widget
+          storageid="thehomemotto"
+          class="mdc-layout-grid__cell"
+        ></memo-widget>
+      </div>
+    </div>
+    <button id="authorize_button" style="display: none;">Authorize</button>
+    <button id="signout_button" style="display: none;">Sign Out</button>
+    <refresh-widget></refresh-widget>
+  <script type="text/javascript" src="bundle.js"></script></body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "TheHome",
+  "short_name": "TheHome",
+  "description": "Look single place, Recognize everything.",
+  "start_url": "/TheHome/",
+  "display": "standalone",
+  "theme_color": "#3f51b5",
+  "background_color": "#3f51b5",
+  "icons": [
+    {
+      "src": "images/favicons/144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ]
+}
