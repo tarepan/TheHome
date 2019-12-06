@@ -42,7 +42,7 @@ const BloodReactWidget: React.FC = () => {
   const url = "https://www.kenketsu.jp";
   return (
     <a href={url} target="_blank">
-      <i className="material-icons md-48 md-dark">opacity</i>
+      <i className="material-icons md-48 md-dark md-inactive">opacity</i>
     </a>
   );
 };
