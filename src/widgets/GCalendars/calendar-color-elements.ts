@@ -51,7 +51,7 @@ export class CalendarColorWidget extends LitElement {
     setInterval(this.updateCount.bind(this), intervalMin * 60 * 1000);
   }
   async updateCount(): Promise<void> {
-    // "2": gray (sleep, move), "8": right-green (finished)
+    // "8": gray (sleep, move), "2": right-green (finished)
     this.matched = await countMatchedColorEvts(["2", "8"]);
     this.inboxCount = this.matched;
   }
