@@ -10,3 +10,4 @@ import "./widgets/sleeps/sleep-elements";
 import "./widgets/bloods/blood-elements";
 import "./widgets/healthHub/health-hub";
 import "./widgets/meal/meal-element";
+import "./widgets/exercises/exercise-elements";
