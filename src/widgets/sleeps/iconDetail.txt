@@ -1,0 +1,3 @@
+Google Material Icon "airline_seat_recline_normal-24px.svg"
+
+https://material.io/resources/icons/?icon=airline_seat_recline_normal&style=baseline

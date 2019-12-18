@@ -2,22 +2,21 @@ import { svg, SVGTemplateResult } from "lit-element";
 
 /**
  *
- * @param {number} nMail - number of unread e-mail
  */
-export const weightIcon = (weight: number): SVGTemplateResult => {
+export const sleepIcon = (
+  wakeup: string,
+  lengthHours: number,
+  lengthMinutes: number,
+  isGoodWakeUp: boolean
+): SVGTemplateResult => {
+  const opacity = !isGoodWakeUp ? 1 : 0.38;
   return svg`
-      <!-- Main Icon -->
+    <svg height="48" viewBox="0 0 62 24">
       <g>
-        <path class="st0" style="fill:#4B4B4B" d="M455.998,0.004H56.002C25.063,0.011,0.008,25.067,0,56.006v399.989c0.008,30.938,25.063,55.994,56.002,56.002
-          h399.997c30.938-0.008,55.994-25.063,56.002-56.002V56.006C511.993,25.067,486.937,0.011,455.998,0.004z M479.999,455.994
-          c-0.007,6.68-2.664,12.579-7.032,16.969c-4.39,4.367-10.289,7.024-16.969,7.032H56.002c-6.68-0.008-12.579-2.664-16.969-7.032
-          c-4.367-4.39-7.023-10.289-7.031-16.969V56.006c0.008-6.68,2.664-12.579,7.031-16.977c4.39-4.359,10.289-7.016,16.969-7.023
-          h399.997c6.68,0.007,12.579,2.664,16.969,7.023c4.367,4.398,7.024,10.297,7.032,16.977V455.994z" style="fill: rgb(75, 75, 75);"></path>
-        <path class="st0" style="fill:#4B4B4B" d="M128.012,119.101l26.391,76.783H270.86l16.352-67.947l9.938,2.031l9.93,2.015l-10.696,63.9h61.212
-          l26.392-76.783C346.612,96.577,302.83,83.6,256.008,83.6C209.178,83.6,165.388,96.577,128.012,119.101z" style="fill: rgb(75, 75, 75);"></path>
-        <text x="50" y="380" font-size="160">${weight.toFixed(1)}</text>
-        <text x="370" y="380" font-size="80">kg</text>
+        <path opacity=${opacity} d="M7.59 5.41c-.78-.78-.78-2.05 0-2.83.78-.78 2.05-.78 2.83 0 .78.78.78 2.05 0 2.83-.79.79-2.05.79-2.83 0zM6 16V7H4v9c0 2.76 2.24 5 5 5h6v-2H9c-1.66 0-3-1.34-3-3zm14 4.07L14.93 15H11.5v-3.68c1.4 1.15 3.6 2.16 5.5 2.16v-2.16c-1.66.02-3.61-.87-4.67-2.04l-1.4-1.55c-.19-.21-.43-.38-.69-.5-.29-.14-.62-.23-.96-.23h-.03C8.01 7 7 8.01 7 9.25V15c0 1.66 1.34 3 3 3h5.07l3.5 3.5L20 20.07z"/>
+        <text opacity=${opacity} x="27" y="10" font-size="10">${wakeup}</text>
+        <text opacity=${opacity} x="25" y="21" font-size="8">${lengthHours}h ${lengthMinutes}m</text>
       </g>
-      <!-- #mail badge -->
-    `;
+    </svg>
+  `;
 };

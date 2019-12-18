@@ -1,7 +1,5 @@
 import { DateTime as dt, Duration } from "luxon";
-import { LitElement, html, customElement } from "lit-element";
-import React, { useEffect } from "react";
-import ReactDOM from "react-dom";
+import { LitElement, html, customElement, property } from "lit-element";
 import { fetchSleeps } from "./requestSleeps";
 import {
   histroy2Wakeup,
@@ -10,10 +8,15 @@ import {
   history2wasGoodWakeup
 } from "./domain";
 import { dispatchNotification } from "../healthHub/health-hub";
+import { sleepIcon } from "./renderIcon";
 
 @customElement("sleep-widget")
 export class SleepWidget extends LitElement {
-  reactAnchor: Element | null;
+  @property({ type: String }) wakeup = "00:00";
+  @property({ type: Number }) lengthHours = 0;
+  @property({ type: Number }) lengthMinutes = 0;
+  @property({ type: Boolean }) isGoodWakeUp = false;
+
   constructor() {
     super();
     // timeout for google auth
@@ -42,17 +45,13 @@ export class SleepWidget extends LitElement {
     dispatchNotification(this, !isGoodWakeup);
 
     // update UI
-    ReactDOM.render(
-      <SleepIcon
-        wakeup={wakeup}
-        lengthHours={lengthHours}
-        lengthMinutes={lengthMinutes}
-        isGoodWakeUp={isGoodWakeup}
-      />,
-      this.reactAnchor
-    );
+    this.wakeup = wakeup;
+    this.lengthHours = lengthHours;
+    this.lengthMinutes = lengthMinutes;
+    this.isGoodWakeUp = isGoodWakeup;
   }
   render() {
+    const url = "https://calendar.google.com/calendar/r/week";
     return html`
       <style>
         @import url("https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css");
@@ -75,11 +74,18 @@ export class SleepWidget extends LitElement {
           color: rgba(0, 0, 0, 0.26);
         }
       </style>
+      <div>
+        <a href=${url} target="_blank" rel="noopener">
+          ${sleepIcon(
+            this.wakeup,
+            this.lengthHours,
+            this.lengthMinutes,
+            this.isGoodWakeUp
+          )}
+        </a>
+      </div>
       <div id="hook"></div>
     `;
-  }
-  firstUpdated() {
-    this.reactAnchor = this.shadowRoot?.querySelector("#hook") ?? null;
   }
 }
 
@@ -90,30 +96,3 @@ async function fetchHistory(): Promise<SleepHistroy> {
   const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
   return isSignedIn ? await fetchSleeps(gapi) : ([[0, 0]] as SleepHistroy);
 }
-
-interface SleepIconProps {
-  wakeup: string;
-  lengthHours: number;
-  lengthMinutes: number;
-  isGoodWakeUp: boolean;
-}
-const SleepIcon: React.FC<SleepIconProps> = props => {
-  const url =
-    "https://docs.google.com/spreadsheets/d/1tPqJlHvR7pu3q4idv2zyYC435eHPVsL7Vn0Q1YCgvt0";
-  return (
-    <>
-      <a href={url} target="_blank" rel="noopener">
-        <i
-          className={`material-icons md-48 md-dark ${
-            props.isGoodWakeUp ? "md-inactive" : ""
-          }`}
-        >
-          airline_seat_recline_normal
-        </i>
-        <h3>
-          {props.wakeup} ({props.lengthHours}h {props.lengthMinutes}m)
-        </h3>
-      </a>
-    </>
-  );
-};
