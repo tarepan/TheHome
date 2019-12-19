@@ -23,10 +23,10 @@ export async function fetchExercises(gapi: any): Promise<ExerciseHistroy> {
   );
   const events = response.result.items as gapi.client.calendar.Event[];
   const execises = events
-    .filter(evt => evt.colorId !== undefined && evt.colorId === "8")
+    .filter(evt => evt.colorId !== undefined && evt.colorId === "2")
     .filter(
       evt =>
-        evt.summary === "適度に使われた体力（運動）" ||
+        /適度に使われた体力（運動）/.test(evt.summary ?? "") ||
         /\[HealthHub-運動\]/.test(evt.description ?? "")
     )
     .map<[number, number]>(evt => {
